@@ -8,6 +8,10 @@ public class TestingGroundsEditorTarget : TargetRules
 	public TestingGroundsEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-		ExtraModuleNames.Add("TestingGrounds");
+
+        bUseUnityBuild = false;
+        bUsePCHFiles = false;
+
+        ExtraModuleNames.Add("TestingGrounds");
 	}
 }
