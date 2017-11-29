@@ -6,6 +6,8 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "ChooseNextWayPoint.generated.h"
 
+class UPatrolComponent;
+
 /**
  * 
  */
@@ -24,5 +26,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	struct FBlackboardKeySelector WayPointKey;
+
+	UPatrolComponent* PatrolComponent = nullptr;
 
 };
