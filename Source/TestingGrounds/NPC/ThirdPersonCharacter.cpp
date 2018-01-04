@@ -5,8 +5,10 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
+#include "GameFramework/Actor.h"
 #include "GameFramework/SpringArmComponent.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -45,7 +47,29 @@ AThirdPersonCharacter::AThirdPersonCharacter()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	// Create a gun mesh component
+	TP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("TP_Gun"));
+	TP_Gun->SetOnlyOwnerSee(false);			
+	TP_Gun->bCastDynamicShadow = false;
+	TP_Gun->CastShadow = false;
+	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
+	TP_Gun->SetupAttachment(RootComponent);
+
+	TP_MuzzleLocation = CreateDefaultSubobject<USceneComponent>(TEXT("MuzzleLocation"));
+	TP_MuzzleLocation->SetupAttachment(TP_Gun);
+	TP_MuzzleLocation->SetRelativeLocation(FVector(0.2f, 48.4f, -10.6f));
 }
+
+void AThirdPersonCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+	/*Finding Skeletal Mesh */
+	MyMesh = GetController()->GetPawn()->FindComponentByClass<USkeletalMeshComponent>();
+	/*Adding Gun to Skeletal Mesh*/
+	TP_Gun->AttachToComponent(MyMesh, FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), TEXT("GripPoint"));
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // Input
